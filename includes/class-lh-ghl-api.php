@@ -145,7 +145,7 @@ class LH_GHL_API {
                 'lh_ghl_http_error',
                 sprintf(
                     /* translators: %s: error message */
-                    __( 'HTTP request failed: %s', 'lh-ghl-gravity-addon' ),
+                    __( 'HTTP request failed: %s', 'gohighlevel-gravity-add-on' ),
                     $response->get_error_message()
                 )
             );
@@ -249,7 +249,7 @@ class LH_GHL_API {
 
         return sprintf(
             /* translators: %d: HTTP status code */
-            __( 'GHL API returned HTTP %d.', 'lh-ghl-gravity-addon' ),
+            __( 'GHL API returned HTTP %d.', 'gohighlevel-gravity-add-on' ),
             $status_code
         );
     }
@@ -309,7 +309,7 @@ class LH_GHL_API {
         if ( empty( $email ) ) {
             $error = new WP_Error(
                 'lh_ghl_missing_email',
-                __( 'Email address is required for contact search.', 'lh-ghl-gravity-addon' )
+                __( 'Email address is required for contact search.', 'gohighlevel-gravity-add-on' )
             );
 
             if ( $this->logger ) {
@@ -385,7 +385,7 @@ class LH_GHL_API {
         if ( empty( $contact_id ) ) {
             $error = new WP_Error(
                 'lh_ghl_missing_contact_id',
-                __( 'Contact ID is required for update.', 'lh-ghl-gravity-addon' )
+                __( 'Contact ID is required for update.', 'gohighlevel-gravity-add-on' )
             );
 
             if ( $this->logger ) {
@@ -434,7 +434,7 @@ class LH_GHL_API {
             if ( empty( $data[ $field ] ) ) {
                 $message = sprintf(
                     /* translators: %s: field name */
-                    __( 'Required opportunity field "%s" is missing.', 'lh-ghl-gravity-addon' ),
+                    __( 'Required opportunity field "%s" is missing.', 'gohighlevel-gravity-add-on' ),
                     $field
                 );
 
@@ -509,7 +509,7 @@ class LH_GHL_API {
             'lh_ghl_pipeline_not_found',
             sprintf(
                 /* translators: %s: pipeline ID */
-                __( 'Pipeline "%s" not found.', 'lh-ghl-gravity-addon' ),
+                __( 'Pipeline "%s" not found.', 'gohighlevel-gravity-add-on' ),
                 $pipeline_id
             )
         );

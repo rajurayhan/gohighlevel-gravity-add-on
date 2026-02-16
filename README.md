@@ -34,7 +34,7 @@ A Gravity Forms add-on that syncs form submissions to **GoHighLevel** (LeadConne
 
 1. **Install Gravity Forms** (if not already installed).
 2. **Install the plugin**
-   - Download or clone this repo into `wp-content/plugins/lh-ghl-gravity-addon/`.
+   - Download or clone this repo into `wp-content/plugins/gohighlevel-gravity-add-on/` (or `lh-ghl-gravity-addon/` if using the legacy folder name).
    - Or upload the plugin folder to `wp-content/plugins/` and extract.
 3. **Activate** the plugin in **Plugins** in the WordPress admin.
 4. **Configure** under **Forms → Settings → GoHighLevel** (see [Configuration Guide](#configuration-guide)).
@@ -140,8 +140,8 @@ You can show **dropdown or radio options from GHL** on the form so visitors sele
 ## Project structure
 
 ```
-lh-ghl-gravity-addon/
-├── lh-ghl-gravity-addon.php    # Main plugin file & bootstrap
+gohighlevel-gravity-add-on/     # or lh-ghl-gravity-addon (local)
+├── gohighlevel-gravity-add-on.php   # Main plugin file & bootstrap
 ├── includes/
 │   ├── class-lh-ghl-addon.php      # GF add-on (feeds, settings UI)
 │   ├── class-lh-ghl-api.php        # GoHighLevel API client
@@ -204,7 +204,7 @@ Sync runs in the background. If your host doesn’t run wp-cron reliably, submis
 - Dependencies (including PHPUnit) are managed by Composer.
 
 ```bash
-cd lh-ghl-gravity-addon
+cd gohighlevel-gravity-add-on   # or lh-ghl-gravity-addon if using that folder name
 composer install
 ./vendor/bin/phpunit
 ```

@@ -42,14 +42,14 @@ class LH_GHL_Addon extends GFFeedAddOn {
      *
      * @var string
      */
-    protected $_slug = 'lh-ghl-gravity-addon';
+    protected $_slug = 'gohighlevel-gravity-add-on';
 
     /**
      * Relative path to the plugin from the plugins folder.
      *
      * @var string
      */
-    protected $_path = 'lh-ghl-gravity-addon/lh-ghl-gravity-addon.php';
+    protected $_path = 'gohighlevel-gravity-add-on/gohighlevel-gravity-add-on.php';
 
     /**
      * Full path to this file.
@@ -206,50 +206,50 @@ class LH_GHL_Addon extends GFFeedAddOn {
     public function plugin_settings_fields(): array {
         return array(
             array(
-                'title'       => esc_html__( 'GoHighLevel API Settings', 'lh-ghl-gravity-addon' ),
-                'description' => esc_html__( 'Configure your GoHighLevel API credentials and plugin options.', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'GoHighLevel API Settings', 'gohighlevel-gravity-add-on' ),
+                'description' => esc_html__( 'Configure your GoHighLevel API credentials and plugin options.', 'gohighlevel-gravity-add-on' ),
                 'fields'      => array(
                     array(
                         'name'              => 'lh_ghl_api_key',
-                        'label'             => esc_html__( 'API Key', 'lh-ghl-gravity-addon' ),
+                        'label'             => esc_html__( 'API Key', 'gohighlevel-gravity-add-on' ),
                         'type'              => 'text',
                         'input_type'        => 'password',
                         'class'             => 'medium',
                         'required'          => true,
                         'feedback_callback' => array( $this, 'is_valid_api_key' ),
-                        'tooltip'           => esc_html__( 'Enter your GoHighLevel (LeadConnector) API key. This key is stored securely and never exposed in frontend code.', 'lh-ghl-gravity-addon' ),
+                        'tooltip'           => esc_html__( 'Enter your GoHighLevel (LeadConnector) API key. This key is stored securely and never exposed in frontend code.', 'gohighlevel-gravity-add-on' ),
                     ),
                     array(
                         'name'     => 'lh_ghl_location_id',
-                        'label'    => esc_html__( 'Location ID', 'lh-ghl-gravity-addon' ),
+                        'label'    => esc_html__( 'Location ID', 'gohighlevel-gravity-add-on' ),
                         'type'     => 'text',
                         'class'    => 'medium',
                         'required' => true,
-                        'tooltip'  => esc_html__( 'Enter your GoHighLevel Location ID.', 'lh-ghl-gravity-addon' ),
+                        'tooltip'  => esc_html__( 'Enter your GoHighLevel Location ID.', 'gohighlevel-gravity-add-on' ),
                     ),
                     array(
                         'name'          => 'lh_ghl_default_lead_source',
-                        'label'         => esc_html__( 'Default Lead Source', 'lh-ghl-gravity-addon' ),
+                        'label'         => esc_html__( 'Default Lead Source', 'gohighlevel-gravity-add-on' ),
                         'type'          => 'text',
                         'class'         => 'medium',
                         'default_value' => 'Gravity Forms',
-                        'tooltip'       => esc_html__( 'Default source value applied to new contacts (e.g. "Gravity Forms").', 'lh-ghl-gravity-addon' ),
+                        'tooltip'       => esc_html__( 'Default source value applied to new contacts (e.g. "Gravity Forms").', 'gohighlevel-gravity-add-on' ),
                     ),
                     array(
                         'name'    => 'lh_ghl_debug_mode',
-                        'label'   => esc_html__( 'Debug Mode', 'lh-ghl-gravity-addon' ),
+                        'label'   => esc_html__( 'Debug Mode', 'gohighlevel-gravity-add-on' ),
                         'type'    => 'checkbox',
                         'choices' => array(
                             array(
-                                'label' => esc_html__( 'Enable verbose debug logging', 'lh-ghl-gravity-addon' ),
+                                'label' => esc_html__( 'Enable verbose debug logging', 'gohighlevel-gravity-add-on' ),
                                 'name'  => 'lh_ghl_debug_mode',
                             ),
                         ),
-                        'tooltip' => esc_html__( 'When enabled, detailed logs are written for every API interaction. Disable in production for performance.', 'lh-ghl-gravity-addon' ),
+                        'tooltip' => esc_html__( 'When enabled, detailed logs are written for every API interaction. Disable in production for performance.', 'gohighlevel-gravity-add-on' ),
                     ),
                     array(
                         'name'  => 'lh_ghl_test_connection',
-                        'label' => esc_html__( 'API Connection', 'lh-ghl-gravity-addon' ),
+                        'label' => esc_html__( 'API Connection', 'gohighlevel-gravity-add-on' ),
                         'type'  => 'html',
                         'html'  => array( $this, 'get_test_connection_markup' ),
                     ),
@@ -351,12 +351,12 @@ class LH_GHL_Addon extends GFFeedAddOn {
     public function ajax_test_connection(): void {
         // Verify nonce (return JSON so the client can show a message instead of "Request failed").
         if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'lh_ghl_test_connection' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Security check failed. Please refresh the page and try again.', 'lh-ghl-gravity-addon' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Security check failed. Please refresh the page and try again.', 'gohighlevel-gravity-add-on' ) ) );
         }
 
         // Verify capability.
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'lh-ghl-gravity-addon' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'gohighlevel-gravity-add-on' ) ) );
         }
 
         $api_key     = $this->get_plugin_setting( 'lh_ghl_api_key' );
@@ -364,7 +364,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
 
         if ( empty( $api_key ) || empty( $location_id ) ) {
             wp_send_json_error(
-                array( 'message' => __( 'Please save your API Key and Location ID before testing the connection.', 'lh-ghl-gravity-addon' ) )
+                array( 'message' => __( 'Please save your API Key and Location ID before testing the connection.', 'gohighlevel-gravity-add-on' ) )
             );
         }
 
@@ -376,7 +376,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
         }
 
         wp_send_json_success(
-            array( 'message' => esc_html__( 'Connection successful! API key and Location ID are valid.', 'lh-ghl-gravity-addon' ) )
+            array( 'message' => esc_html__( 'Connection successful! API key and Location ID are valid.', 'gohighlevel-gravity-add-on' ) )
         );
     }
 
@@ -412,7 +412,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
      */
     public function get_test_connection_markup(): string {
         $html  = '<button type="button" id="lh-ghl-test-connection" class="button-secondary">';
-        $html .= esc_html__( 'Test Connection', 'lh-ghl-gravity-addon' );
+        $html .= esc_html__( 'Test Connection', 'gohighlevel-gravity-add-on' );
         $html .= '</button>';
         $html .= '<span id="lh-ghl-test-connection-result" style="margin-left: 10px;"></span>';
         return $html;
@@ -442,9 +442,9 @@ class LH_GHL_Addon extends GFFeedAddOn {
      * @return string Inline script content (no script tag wrapper).
      */
     private function get_test_connection_script( string $nonce ): string {
-        $testing_text = esc_js( __( 'Testing…', 'lh-ghl-gravity-addon' ) );
-        $button_text  = esc_js( __( 'Test Connection', 'lh-ghl-gravity-addon' ) );
-        $fail_text    = esc_js( __( 'Request failed. Please try again.', 'lh-ghl-gravity-addon' ) );
+        $testing_text = esc_js( __( 'Testing…', 'gohighlevel-gravity-add-on' ) );
+        $button_text  = esc_js( __( 'Test Connection', 'gohighlevel-gravity-add-on' ) );
+        $fail_text    = esc_js( __( 'Request failed. Please try again.', 'gohighlevel-gravity-add-on' ) );
         $nonce_js     = esc_js( $nonce );
 
         $js = 'jQuery(document).ready(function($) {';
@@ -518,109 +518,109 @@ class LH_GHL_Addon extends GFFeedAddOn {
             // Section 1: Feed Name.
             array(
                 'id'          => 'lh-ghl-section-feed-name',
-                'title'       => esc_html__( 'GoHighLevel Feed Settings', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'GoHighLevel Feed Settings', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'     => 'feedName',
-                        'label'    => esc_html__( 'Feed Name', 'lh-ghl-gravity-addon' ),
+                        'label'    => esc_html__( 'Feed Name', 'gohighlevel-gravity-add-on' ),
                         'type'     => 'text',
                         'required' => true,
                         'class'    => 'medium',
-                        'tooltip'  => esc_html__( 'Enter a descriptive name for this feed.', 'lh-ghl-gravity-addon' ),
+                        'tooltip'  => esc_html__( 'Enter a descriptive name for this feed.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
             // Section 2: Contact Field Mapping (form field or custom value per contact field).
             array(
                 'id'          => 'lh-ghl-section-contact-mapping',
-                'title'       => esc_html__( 'Contact Field Mapping', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Contact Field Mapping', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'                => 'contactFieldMap',
-                        'label'               => esc_html__( 'Map Fields', 'lh-ghl-gravity-addon' ),
+                        'label'               => esc_html__( 'Map Fields', 'gohighlevel-gravity-add-on' ),
                         'type'                => 'generic_map',
                         'key_choices'         => $this->get_contact_field_map(),
                         'enable_custom_value' => true,
-                        'key_field_title'     => esc_html__( 'GHL Contact Field', 'lh-ghl-gravity-addon' ),
-                        'value_field_title'   => esc_html__( 'Form Field or Custom Value', 'lh-ghl-gravity-addon' ),
-                        'tooltip'             => esc_html__( 'Map form fields or enter a custom value (merge tags supported) for each GoHighLevel contact field. Email is required.', 'lh-ghl-gravity-addon' ),
+                        'key_field_title'     => esc_html__( 'GHL Contact Field', 'gohighlevel-gravity-add-on' ),
+                        'value_field_title'   => esc_html__( 'Form Field or Custom Value', 'gohighlevel-gravity-add-on' ),
+                        'tooltip'             => esc_html__( 'Map form fields or enter a custom value (merge tags supported) for each GoHighLevel contact field. Email is required.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
             // Section 3: Custom Fields (GHL custom fields loaded from API; user selects by name).
             array(
                 'id'          => 'lh-ghl-section-custom-fields',
-                'title'       => esc_html__( 'Custom Fields', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Custom Fields', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'              => 'customFieldMap',
-                        'label'             => esc_html__( 'Custom Field Mapping', 'lh-ghl-gravity-addon' ),
+                        'label'             => esc_html__( 'Custom Field Mapping', 'gohighlevel-gravity-add-on' ),
                         'type'              => 'generic_map',
                         'key_choices'       => $this->get_custom_field_choices(),
-                        'key_field_title'   => esc_html__( 'GHL Custom Field', 'lh-ghl-gravity-addon' ),
-                        'value_field_title' => esc_html__( 'Form Field', 'lh-ghl-gravity-addon' ),
-                        'tooltip'           => esc_html__( 'Map form fields to GoHighLevel contact custom fields. Select the GHL custom field on the left and the form field or custom value on the right. Custom fields are loaded from your GHL location.', 'lh-ghl-gravity-addon' ),
+                        'key_field_title'   => esc_html__( 'GHL Custom Field', 'gohighlevel-gravity-add-on' ),
+                        'value_field_title' => esc_html__( 'Form Field', 'gohighlevel-gravity-add-on' ),
+                        'tooltip'           => esc_html__( 'Map form fields to GoHighLevel contact custom fields. Select the GHL custom field on the left and the form field or custom value on the right. Custom fields are loaded from your GHL location.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
             // Section 4: Tags.
             array(
                 'id'          => 'lh-ghl-section-tags',
-                'title'       => esc_html__( 'Tags', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Tags', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'    => 'contactTags',
-                        'label'   => esc_html__( 'Tags', 'lh-ghl-gravity-addon' ),
+                        'label'   => esc_html__( 'Tags', 'gohighlevel-gravity-add-on' ),
                         'type'    => 'text',
                         'class'   => 'medium merge-tag-support mt-position-right',
-                        'tooltip' => esc_html__( 'Enter comma-separated tags to assign to the contact in GoHighLevel. Merge tags are supported.', 'lh-ghl-gravity-addon' ),
+                        'tooltip' => esc_html__( 'Enter comma-separated tags to assign to the contact in GoHighLevel. Merge tags are supported.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
             // Section 5: Opportunity Toggle.
             array(
                 'id'          => 'lh-ghl-section-opportunity-toggle',
-                'title'       => esc_html__( 'Opportunity', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Opportunity', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'    => 'enableOpportunity',
-                        'label'   => esc_html__( 'Create Opportunity', 'lh-ghl-gravity-addon' ),
+                        'label'   => esc_html__( 'Create Opportunity', 'gohighlevel-gravity-add-on' ),
                         'type'    => 'checkbox',
                         'choices' => array(
                             array(
-                                'label' => esc_html__( 'Enable opportunity creation for this feed', 'lh-ghl-gravity-addon' ),
+                                'label' => esc_html__( 'Enable opportunity creation for this feed', 'gohighlevel-gravity-add-on' ),
                                 'name'  => 'enableOpportunity',
                             ),
                         ),
-                        'tooltip' => esc_html__( 'When enabled, an opportunity will be created in the selected pipeline alongside the contact.', 'lh-ghl-gravity-addon' ),
+                        'tooltip' => esc_html__( 'When enabled, an opportunity will be created in the selected pipeline alongside the contact.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
             // Section 6: Opportunity Settings (always visible so configs can be set when adding a new feed).
             array(
                 'id'          => 'lh-ghl-section-opportunity-settings',
-                'title'       => esc_html__( 'Opportunity Settings', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Opportunity Settings', 'gohighlevel-gravity-add-on' ),
                 'collapsible'  => true,
                 'fields'      => $this->get_opportunity_settings_fields(),
             ),
             // Section 7: Conditional Logic.
             array(
                 'id'          => 'lh-ghl-section-conditional-logic',
-                'title'       => esc_html__( 'Conditional Logic', 'lh-ghl-gravity-addon' ),
+                'title'       => esc_html__( 'Conditional Logic', 'gohighlevel-gravity-add-on' ),
                 'collapsible' => true,
                 'fields'      => array(
                     array(
                         'name'           => 'feedCondition',
-                        'label'          => esc_html__( 'Conditional Logic', 'lh-ghl-gravity-addon' ),
+                        'label'          => esc_html__( 'Conditional Logic', 'gohighlevel-gravity-add-on' ),
                         'type'           => 'feed_condition',
-                        'checkbox_label' => esc_html__( 'Enable', 'lh-ghl-gravity-addon' ),
-                        'instructions'   => esc_html__( 'Process this feed if', 'lh-ghl-gravity-addon' ),
-                        'tooltip'        => esc_html__( 'When enabled, this feed will only be processed when the specified conditions are met.', 'lh-ghl-gravity-addon' ),
+                        'checkbox_label' => esc_html__( 'Enable', 'gohighlevel-gravity-add-on' ),
+                        'instructions'   => esc_html__( 'Process this feed if', 'gohighlevel-gravity-add-on' ),
+                        'tooltip'        => esc_html__( 'When enabled, this feed will only be processed when the specified conditions are met.', 'gohighlevel-gravity-add-on' ),
                     ),
                 ),
             ),
@@ -657,10 +657,10 @@ class LH_GHL_Addon extends GFFeedAddOn {
                     foreach ( $section['fields'] as &$field ) {
                         $name = rgar( $field, 'name' );
                         if ( $name === 'opportunityPipeline' && rgblank( $pipeline ) ) {
-                            $this->set_field_error( $field, esc_html__( 'Please select a pipeline.', 'lh-ghl-gravity-addon' ) );
+                            $this->set_field_error( $field, esc_html__( 'Please select a pipeline.', 'gohighlevel-gravity-add-on' ) );
                         }
                         if ( $name === 'opportunityStage' && rgblank( $stage ) ) {
-                            $this->set_field_error( $field, esc_html__( 'Please select a stage.', 'lh-ghl-gravity-addon' ) );
+                            $this->set_field_error( $field, esc_html__( 'Please select a stage.', 'gohighlevel-gravity-add-on' ) );
                         }
                     }
                     break;
@@ -678,20 +678,20 @@ class LH_GHL_Addon extends GFFeedAddOn {
      */
     private function get_default_contact_field_map(): array {
         return array(
-            array( 'name' => 'firstName', 'label' => esc_html__( 'First Name', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'lastName', 'label' => esc_html__( 'Last Name', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'name', 'label' => esc_html__( 'Full Name', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'email', 'label' => esc_html__( 'Email', 'lh-ghl-gravity-addon' ), 'required' => true ),
-            array( 'name' => 'phone', 'label' => esc_html__( 'Phone', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'address1', 'label' => esc_html__( 'Address (Street)', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'city', 'label' => esc_html__( 'City', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'state', 'label' => esc_html__( 'State', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'postalCode', 'label' => esc_html__( 'Postal / ZIP Code', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'country', 'label' => esc_html__( 'Country', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'companyName', 'label' => esc_html__( 'Company Name', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'website', 'label' => esc_html__( 'Website', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'dateOfBirth', 'label' => esc_html__( 'Date of Birth', 'lh-ghl-gravity-addon' ), 'required' => false ),
-            array( 'name' => 'source', 'label' => esc_html__( 'Lead Source', 'lh-ghl-gravity-addon' ), 'required' => false ),
+            array( 'name' => 'firstName', 'label' => esc_html__( 'First Name', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'lastName', 'label' => esc_html__( 'Last Name', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'name', 'label' => esc_html__( 'Full Name', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'email', 'label' => esc_html__( 'Email', 'gohighlevel-gravity-add-on' ), 'required' => true ),
+            array( 'name' => 'phone', 'label' => esc_html__( 'Phone', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'address1', 'label' => esc_html__( 'Address (Street)', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'city', 'label' => esc_html__( 'City', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'state', 'label' => esc_html__( 'State', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'postalCode', 'label' => esc_html__( 'Postal / ZIP Code', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'country', 'label' => esc_html__( 'Country', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'companyName', 'label' => esc_html__( 'Company Name', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'website', 'label' => esc_html__( 'Website', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'dateOfBirth', 'label' => esc_html__( 'Date of Birth', 'gohighlevel-gravity-add-on' ), 'required' => false ),
+            array( 'name' => 'source', 'label' => esc_html__( 'Lead Source', 'gohighlevel-gravity-add-on' ), 'required' => false ),
         );
     }
 
@@ -792,64 +792,64 @@ class LH_GHL_Addon extends GFFeedAddOn {
         return array(
             array(
                 'name'     => 'opportunityPipeline',
-                'label'    => esc_html__( 'Pipeline', 'lh-ghl-gravity-addon' ),
+                'label'    => esc_html__( 'Pipeline', 'gohighlevel-gravity-add-on' ),
                 'type'     => 'select',
                 'choices'  => $this->get_pipeline_choices(),
                 'onchange' => "jQuery(this).parents('form').submit();",
-                'tooltip'  => esc_html__( 'Select the pipeline for the opportunity. Changing this will save the feed and reload available stages.', 'lh-ghl-gravity-addon' ),
+                'tooltip'  => esc_html__( 'Select the pipeline for the opportunity. Changing this will save the feed and reload available stages.', 'gohighlevel-gravity-add-on' ),
             ),
             array(
                 'name'    => 'opportunityStage',
-                'label'   => esc_html__( 'Stage', 'lh-ghl-gravity-addon' ),
+                'label'   => esc_html__( 'Stage', 'gohighlevel-gravity-add-on' ),
                 'type'    => 'select',
                 'choices' => $this->get_stage_choices(),
-                'tooltip' => esc_html__( 'Select the stage within the selected pipeline.', 'lh-ghl-gravity-addon' ),
+                'tooltip' => esc_html__( 'Select the stage within the selected pipeline.', 'gohighlevel-gravity-add-on' ),
             ),
             array(
                 'name'    => 'opportunityName',
-                'label'   => esc_html__( 'Opportunity Name', 'lh-ghl-gravity-addon' ),
+                'label'   => esc_html__( 'Opportunity Name', 'gohighlevel-gravity-add-on' ),
                 'type'    => 'text',
                 'class'   => 'medium merge-tag-support mt-position-right',
-                'tooltip' => esc_html__( 'Enter a name for the opportunity. Merge tags are supported (e.g. {First Name:1} - New Lead).', 'lh-ghl-gravity-addon' ),
+                'tooltip' => esc_html__( 'Enter a name for the opportunity. Merge tags are supported (e.g. {First Name:1} - New Lead).', 'gohighlevel-gravity-add-on' ),
             ),
             array(
                 'name'    => 'opportunityValue',
-                'label'   => esc_html__( 'Monetary Value', 'lh-ghl-gravity-addon' ),
+                'label'   => esc_html__( 'Monetary Value', 'gohighlevel-gravity-add-on' ),
                 'type'    => 'text',
                 'class'   => 'medium merge-tag-support mt-position-right',
-                'tooltip' => esc_html__( 'Enter a static monetary value or use a merge tag to map from a form field.', 'lh-ghl-gravity-addon' ),
+                'tooltip' => esc_html__( 'Enter a static monetary value or use a merge tag to map from a form field.', 'gohighlevel-gravity-add-on' ),
             ),
             array(
                 'name'    => 'opportunityAssignTo',
-                'label'   => esc_html__( 'Assign To', 'lh-ghl-gravity-addon' ),
+                'label'   => esc_html__( 'Assign To', 'gohighlevel-gravity-add-on' ),
                 'type'    => 'select',
                 'choices' => $this->get_user_choices(),
-                'tooltip' => esc_html__( 'Select a user in your GHL location to assign the opportunity to (optional). Users are loaded from your location.', 'lh-ghl-gravity-addon' ),
+                'tooltip' => esc_html__( 'Select a user in your GHL location to assign the opportunity to (optional). Users are loaded from your location.', 'gohighlevel-gravity-add-on' ),
             ),
             array(
                 'name'          => 'opportunityStatus',
-                'label'         => esc_html__( 'Status', 'lh-ghl-gravity-addon' ),
+                'label'         => esc_html__( 'Status', 'gohighlevel-gravity-add-on' ),
                 'type'          => 'select',
                 'default_value' => 'open',
                 'choices'       => array(
                     array(
-                        'label' => esc_html__( 'Open', 'lh-ghl-gravity-addon' ),
+                        'label' => esc_html__( 'Open', 'gohighlevel-gravity-add-on' ),
                         'value' => 'open',
                     ),
                     array(
-                        'label' => esc_html__( 'Won', 'lh-ghl-gravity-addon' ),
+                        'label' => esc_html__( 'Won', 'gohighlevel-gravity-add-on' ),
                         'value' => 'won',
                     ),
                     array(
-                        'label' => esc_html__( 'Lost', 'lh-ghl-gravity-addon' ),
+                        'label' => esc_html__( 'Lost', 'gohighlevel-gravity-add-on' ),
                         'value' => 'lost',
                     ),
                     array(
-                        'label' => esc_html__( 'Abandoned', 'lh-ghl-gravity-addon' ),
+                        'label' => esc_html__( 'Abandoned', 'gohighlevel-gravity-add-on' ),
                         'value' => 'abandoned',
                     ),
                 ),
-                'tooltip' => esc_html__( 'Set the initial status of the opportunity.', 'lh-ghl-gravity-addon' ),
+                'tooltip' => esc_html__( 'Set the initial status of the opportunity.', 'gohighlevel-gravity-add-on' ),
             ),
         );
     }
@@ -865,7 +865,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
     private function get_pipeline_choices(): array {
         $choices = array(
             array(
-                'label' => esc_html__( '— Select a Pipeline —', 'lh-ghl-gravity-addon' ),
+                'label' => esc_html__( '— Select a Pipeline —', 'gohighlevel-gravity-add-on' ),
                 'value' => '',
             ),
         );
@@ -1030,7 +1030,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
     private function get_user_choices(): array {
         $choices = array(
             array(
-                'label' => esc_html__( '— No assignment —', 'lh-ghl-gravity-addon' ),
+                'label' => esc_html__( '— No assignment —', 'gohighlevel-gravity-add-on' ),
                 'value' => '',
             ),
         );
@@ -1093,7 +1093,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
     private function get_stage_choices(): array {
         $choices = array(
             array(
-                'label' => esc_html__( '— Select a Stage —', 'lh-ghl-gravity-addon' ),
+                'label' => esc_html__( '— Select a Stage —', 'gohighlevel-gravity-add-on' ),
                 'value' => '',
             ),
         );
@@ -1134,8 +1134,8 @@ class LH_GHL_Addon extends GFFeedAddOn {
      */
     public function feed_list_columns(): array {
         return array(
-            'feedName'          => esc_html__( 'Name', 'lh-ghl-gravity-addon' ),
-            'enableOpportunity' => esc_html__( 'Opportunity', 'lh-ghl-gravity-addon' ),
+            'feedName'          => esc_html__( 'Name', 'gohighlevel-gravity-add-on' ),
+            'enableOpportunity' => esc_html__( 'Opportunity', 'gohighlevel-gravity-add-on' ),
         );
     }
 
@@ -1150,10 +1150,10 @@ class LH_GHL_Addon extends GFFeedAddOn {
         $enabled = rgars( $feed, 'meta/enableOpportunity' );
 
         if ( $enabled ) {
-            return '<span style="color: green;">&#10003; ' . esc_html__( 'Enabled', 'lh-ghl-gravity-addon' ) . '</span>';
+            return '<span style="color: green;">&#10003; ' . esc_html__( 'Enabled', 'gohighlevel-gravity-add-on' ) . '</span>';
         }
 
-        return '<span style="color: #999;">&#8212; ' . esc_html__( 'Disabled', 'lh-ghl-gravity-addon' ) . '</span>';
+        return '<span style="color: #999;">&#8212; ' . esc_html__( 'Disabled', 'gohighlevel-gravity-add-on' ) . '</span>';
     }
 
     // -------------------------------------------------------------------------
@@ -1171,7 +1171,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
         check_ajax_referer( 'lh_ghl_get_stages', 'nonce' );
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'lh-ghl-gravity-addon' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'gohighlevel-gravity-add-on' ) ) );
         }
 
         $pipeline_id = sanitize_text_field( wp_unslash( $_POST['pipeline_id'] ?? '' ) );
@@ -1182,7 +1182,7 @@ class LH_GHL_Addon extends GFFeedAddOn {
 
         $api = $this->get_api();
         if ( null === $api ) {
-            wp_send_json_error( array( 'message' => __( 'API not configured. Please save your API Key and Location ID first.', 'lh-ghl-gravity-addon' ) ) );
+            wp_send_json_error( array( 'message' => __( 'API not configured. Please save your API Key and Location ID first.', 'gohighlevel-gravity-add-on' ) ) );
         }
 
         $stages = $api->get_pipeline_stages( $pipeline_id );
